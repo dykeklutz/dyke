@@ -2,283 +2,180 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Your Name — Bio</title>
-<meta name="description" content="Links, projects, and contact for Your Name." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>kat</title>
+<meta name="theme-color" content="#1e1e1e" />
 <style>
-  :root {
-    --bg-1: #0b0f1a;
-    --bg-2: #1a1033;
-    --accent: #7c5cff;
-    --accent-2: #3dd6ff;
-    --glass: rgba(255,255,255,0.08);
-    --glass-border: rgba(255,255,255,0.18);
-    --text: #f5f7ff;
-    --muted: #a9b0c7;
-  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    color: var(--text);
-    background: var(--bg-1);
-    overflow-x: hidden;
+    background: #1e1e1e;
+    color: #ccc;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
     min-height: 100vh;
   }
+  .bg-video {
+    position: fixed; inset: 0; z-index: 0;
+    width: 100%; height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+  }
+  .bg-video-overlay {
+    position: fixed; inset: 0; z-index: 0;
+    background: rgba(0,0,0,0.45);
+    pointer-events: none;
+  }
+  a { color: #8b7ec8; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  button, input { font: inherit; }
+  button { cursor: pointer; background: #2a2a2a; color: #ccc; border: 1px solid #444; padding: 3px 8px; }
+  button:hover { background: #333; }
+  img { max-width: 100%; }
+  .mono { font-family: Consolas, "Courier New", monospace; font-size: 12px; }
+  .muted { color: #777; font-size: 12px; }
 
-  /* Animated background blobs */
-  .bg {
-    position: fixed; inset: 0; z-index: -1; overflow: hidden;
+  /* Reveal screen */
+  .reveal-screen {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    background: #1e1e1e;
+    cursor: pointer;
   }
-  .blob {
-    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.55;
-    animation: float 18s ease-in-out infinite;
-  }
-  .blob.b1 { width: 420px; height: 420px; background: #7c5cff; top: -120px; left: -100px; }
-  .blob.b2 { width: 380px; height: 380px; background: #3dd6ff; bottom: -120px; right: -80px; animation-delay: -6s; }
-  .blob.b3 { width: 300px; height: 300px; background: #ff6b9d; top: 40%; left: 50%; animation-delay: -12s; opacity: 0.35; }
-  @keyframes float {
-    0%,100% { transform: translate(0,0) scale(1); }
-    33% { transform: translate(40px,-30px) scale(1.08); }
-    66% { transform: translate(-30px,40px) scale(0.95); }
-  }
-  .grid {
-    position: fixed; inset: 0; z-index: -1;
-    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-  }
+  .reveal-screen.hidden { display: none; }
+  .reveal-text { color: #777; font-size: 12px; }
 
-  .wrap {
-    max-width: 460px; margin: 0 auto; padding: 48px 20px 64px;
-    display: flex; flex-direction: column; gap: 18px;
+  /* Page */
+  .page {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px 12px;
   }
-
-  /* Profile */
-  .profile { text-align: center; padding: 8px 0 4px; }
-  .avatar {
-    width: 108px; height: 108px; border-radius: 50%; margin: 0 auto 16px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    padding: 3px; position: relative;
-    box-shadow: 0 10px 40px rgba(124,92,255,0.35);
-  }
-  .avatar-inner {
-    width: 100%; height: 100%; border-radius: 50%;
-    background: linear-gradient(135deg, #1e1b3a, #0b0f1a);
-    display: grid; place-items: center; font-size: 38px; font-weight: 700;
-    color: #fff; letter-spacing: -1px;
-  }
-  .avatar::after {
-    content: ''; position: absolute; inset: -6px; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.15); animation: pulse 3s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.08);opacity:.2} }
-  h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
-  .tagline { color: var(--muted); font-size: 15px; margin-top: 6px; font-weight: 400; }
-  .badges { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
-  .badge {
-    font-size: 12px; padding: 4px 10px; border-radius: 999px;
-    background: var(--glass); border: 1px solid var(--glass-border);
-    backdrop-filter: blur(10px); color: var(--muted);
-  }
-
-  /* Glass card */
   .card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 18px;
-    padding: 18px;
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
-    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    width: 100%; max-width: 640px;
+    border: 1px solid #333; background: rgba(0,0,0,0.35);
+    padding: 12px;
   }
-  .card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(255,255,255,0.3);
-    box-shadow: 0 12px 40px rgba(124,92,255,0.18), inset 0 1px 0 rgba(255,255,255,0.12);
-  }
-  .card h2 {
-    font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px;
-    color: var(--muted); margin-bottom: 12px; font-weight: 600;
-  }
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #333; }
+  .card-head h2 { font-size: 13px; font-weight: 600; }
+  .badge { padding: 0 4px; border: 1px solid #444; font-size: 10px; color: #777; }
 
-  /* Links */
-  .link {
-    display: flex; align-items: center; gap: 14px;
-    padding: 13px 14px; border-radius: 12px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
-    color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;
-    transition: background .2s ease, transform .2s ease;
-    margin-bottom: 8px;
-  }
-  .link:last-child { margin-bottom: 0; }
-  .link:hover { background: rgba(255,255,255,0.1); transform: translateX(3px); }
-  .link .ico {
-    width: 36px; height: 36px; border-radius: 10px;
-    display: grid; place-items: center; font-size: 18px;
-    background: linear-gradient(135deg, rgba(124,92,255,0.3), rgba(61,214,255,0.2));
-    border: 1px solid rgba(255,255,255,0.1);
-    flex-shrink: 0;
-  }
-  .link .meta { flex: 1; min-width: 0; }
-  .link .meta small { display: block; color: var(--muted); font-size: 12px; font-weight: 400; margin-top: 1px; }
-  .link .arrow { color: var(--muted); font-size: 18px; transition: transform .2s; }
-  .link:hover .arrow { transform: translateX(3px); color: var(--text); }
+  /* Banner */
+  .banner { height: 120px; overflow: hidden; border: 1px solid #333; background: #111; margin-bottom: 8px; }
+  .banner img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-  /* Social row */
-  .socials { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
-  .social {
-    aspect-ratio: 1; border-radius: 14px;
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-    display: grid; place-items: center; font-size: 22px; text-decoration: none;
-    color: var(--text); transition: transform .2s, background .2s;
-  }
-  .social:hover { transform: translateY(-3px) scale(1.05); background: rgba(255,255,255,0.1); }
+  /* Head */
+  .head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .avatar { width: 48px; height: 48px; flex: none; border: 1px solid #333; background: #111; overflow: hidden; }
+  .avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .identity-text h2 { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 2px; }
+  .tag { padding: 0 4px; border: 1px solid #444; font-size: 10px; color: #777; }
 
-  /* Contact form */
-  .form { display: flex; flex-direction: column; gap: 10px; }
-  .form input, .form textarea {
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px; padding: 11px 12px; color: var(--text);
-    font-family: inherit; font-size: 14px; outline: none; resize: vertical;
-    transition: border-color .2s;
-  }
-  .form input:focus, .form textarea:focus { border-color: var(--accent); }
-  .form button {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff; border: none; border-radius: 10px; padding: 12px;
-    font-weight: 600; font-size: 14px; cursor: pointer; font-family: inherit;
-    transition: transform .2s, box-shadow .2s;
-  }
-  .form button:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,92,255,0.4); }
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-    background: rgba(20,20,30,0.9); border: 1px solid var(--glass-border);
-    padding: 12px 18px; border-radius: 12px; backdrop-filter: blur(12px);
-    font-size: 14px; transition: transform .3s; z-index: 50;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+  /* Bio */
+  .bio { font-size: 12px; color: #aaa; line-height: 1.5; margin: 8px 0; }
+  .bio p + p { margin-top: 6px; }
 
-  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 8px; }
-  footer a { color: var(--accent-2); text-decoration: none; }
+  /* Meta */
+  .meta-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 4px 0; border-top: 1px solid #333; border-bottom: 1px solid #333; margin: 8px 0; font-size: 11px; color: #777; }
+  .views { display: inline-flex; align-items: center; gap: 4px; }
+  .views .num { color: #ccc; font-weight: 600; }
+  .views-badge-top { position: absolute; top: 6px; right: 6px; padding: 1px 5px; border: 1px solid #444; background: #222; font-size: 10px; color: #777; }
+  .card { position: relative; }
 
-  /* Reveal on load */
-  .reveal { opacity: 0; transform: translateY(12px); animation: reveal .6s ease forwards; }
-  @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
-  .reveal.d1 { animation-delay: .05s; }
-  .reveal.d2 { animation-delay: .15s; }
-  .reveal.d3 { animation-delay: .25s; }
-  .reveal.d4 { animation-delay: .35s; }
-  .reveal.d5 { animation-delay: .45s; }
+  /* Music */
+  .music { padding: 6px 0; border-top: 1px solid #333; margin-top: 8px; font-size: 11px; color: #777; }
 
-  @media (max-width: 480px) {
-    .wrap { padding: 36px 16px 48px; }
-    h1 { font-size: 24px; }
+  /* Credit corners */
+  .corner-credit { position: fixed; z-index: 10; color: #444; font-size: 10px; font-family: Consolas, monospace; padding: 4px 8px; pointer-events: none; user-select: none; }
+  .credit-tl { top: 0; left: 0; } .credit-tr { top: 0; right: 0; }
+  .credit-bl { bottom: 0; left: 0; } .credit-br { bottom: 0; right: 0; }
+  .credit { text-align: center; padding: 12px 0 4px; color: #555; font-size: 11px; font-family: Consolas, monospace; }
+
+  @media (max-width: 600px) {
+    .card { max-width: 100%; }
   }
 </style>
 </head>
 <body>
-  <div class="bg">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
+  <video class="bg-video" src="bg.mp4" autoplay muted loop playsinline></video>
+  <div class="bg-video-overlay"></div>
+  <div class="reveal-screen" id="revealScreen">
+    <span class="reveal-text">click to reveal</span>
   </div>
-  <div class="grid"></div>
 
-  <main class="wrap">
-    <section class="profile reveal d1">
-      <div class="avatar"><div class="avatar-inner">YN</div></div>
-      <h1>Your Name</h1>
-      <p class="tagline">Designer · Developer · Dreamer</p>
-      <div class="badges">
-        <span class="badge">📍 Somewhere on Earth</span>
-        <span class="badge">🟢 Available for work</span>
+  <div class="page">
+    <article class="card">
+      <div class="card-head">
+        <h2>kat</h2>
       </div>
-    </section>
 
-    <section class="card reveal d2">
-      <h2>Socials</h2>
-      <div class="socials">
-        <a class="social" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">📸</a>
-        <a class="social" href="https://x.com" target="_blank" rel="noopener" aria-label="X / Twitter">𝕏</a>
-        <a class="social" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">🎵</a>
-        <a class="social" href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube">▶️</a>
-        <a class="social" href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub">💻</a>
-        <a class="social" href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">💼</a>
-        <a class="social" href="https://discord.com" target="_blank" rel="noopener" aria-label="Discord">🎮</a>
-        <a class="social" href="mailto:hello@example.com" aria-label="Email">✉️</a>
+      <div class="banner">
+        <img src="https://r2.fakecrime.bio/banners/e80f3cc9-201a-40ed-8af8-8d6a83dd124b.webp" alt="">
       </div>
-    </section>
 
-    <section class="card reveal d3">
-      <h2>Links</h2>
-      <a class="link" href="#" onclick="copyEmail(event)">
-        <span class="ico">✉️</span>
-        <span class="meta">Email me<small>hello@example.com</small></span>
-        <span class="arrow">›</span>
-      </a>
-      <a class="link" href="#" target="_blank" rel="noopener">
-        <span class="ico">🌐</span>
-        <span class="meta">Portfolio<small>View my latest work</small></span>
-        <span class="arrow">›</span>
-      </a>
-      <a class="link" href="#" target="_blank" rel="noopener">
-        <span class="ico">📄</span>
-        <span class="meta">Resume<small>Download PDF</small></span>
-        <span class="arrow">›</span>
-      </a>
-      <a class="link" href="#" target="_blank" rel="noopener">
-        <span class="ico">🛒</span>
-        <span class="meta">Store<small>Products & merch</small></span>
-        <span class="arrow">›</span>
-      </a>
-      <a class="link" href="#" target="_blank" rel="noopener">
-        <span class="ico">☕</span>
-        <span class="meta">Support me<small>Buy me a coffee</small></span>
-        <span class="arrow">›</span>
-      </a>
-    </section>
+      <div class="head">
+        <div class="avatar">
+          <img src="https://r2.fakecrime.bio/avatars/0dcd75b8-f1d5-44de-bc80-652da93a052e.webp" alt="">
+        </div>
+        <div class="identity-text">
+          <h2>kat</h2>
+        </div>
+      </div>
 
-    <section class="card reveal d4">
-      <h2>Send a message</h2>
-      <form class="form" onsubmit="handleSubmit(event)">
-        <input type="text" placeholder="Your name" required />
-        <input type="email" placeholder="Your email" required />
-        <textarea rows="4" placeholder="Your message" required></textarea>
-        <button type="submit">Send message</button>
-      </form>
-    </section>
+      <div class="bio">
+        <p>Humanity was a virus wearing the mask of dominion, and it never once apologized for the wound. Forests fell for profit margins, oceans choked on convenience, and species vanished in silence while men in suits called it progress.</p>
+        <p>There is no redemption for a species that mistook the planet for property. Let the missiles fly then — let the fire that we built to kill each other finally kill us instead, and let the ash settle over a world that no longer has to beg us for mercy.</p>
+      </div>
 
-    <footer class="reveal d5">
-      © 2026 Your Name · Built with ✨ · <a href="#">Top</a>
-    </footer>
-  </main>
+      <div class="meta-row">
+        <span class="muted">bio</span>
+        <span class="views">views <span class="num" id="viewCount2">0</span></span>
+      </div>
+    </article>
+  </div>
 
-  <div class="toast" id="toast">Copied to clipboard</div>
+  <p class="corner-credit credit-tl">-made by kat &lt;3 :3</p>
+  <p class="corner-credit credit-tr">-made by kat &lt;3 :3</p>
+  <p class="corner-credit credit-bl">-made by kat &lt;3 :3</p>
+  <p class="corner-credit credit-br">-made by kat &lt;3 :3</p>
+  <p class="credit">-made by kat &lt;3 :3</p>
+
+  <audio id="audio" src="bright.mp3" loop preload="metadata"></audio>
 
   <script>
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    const reveal = document.getElementById('revealScreen');
+    reveal.addEventListener('click', () => {
+      reveal.classList.add('hidden');
+      audio.play().catch(() => {});
+    });
+    const audio = document.getElementById('audio');
+
+    const viewEl = document.getElementById('viewCount');
+    const viewEl2 = document.getElementById('viewCount2');
+    const COUNTER_URL = 'https://tally.yuki.sh/counters/dykeklutz/bio-views';
+    function animateCount(target) {
+      let cur = 0;
+      const iv = setInterval(() => {
+        cur += Math.ceil((target - cur) / 8) || 1;
+        if (cur >= target) { cur = target; clearInterval(iv); }
+        if (viewEl) viewEl.textContent = cur.toLocaleString();
+        if (viewEl2) viewEl2.textContent = cur.toLocaleString();
+      }, 40);
     }
-    function copyEmail(e) {
-      e.preventDefault();
-      navigator.clipboard.writeText('hello@example.com').then(() => showToast('Email copied!'));
-    }
-    function handleSubmit(e) {
-      e.preventDefault();
-      showToast('Message sent! (demo)');
-      e.target.reset();
-    }
+    fetch(COUNTER_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' } })
+      .then(r => r.json())
+      .then(data => {
+        const n = (data && typeof data.visitor === 'number') ? data.visitor : (data && data.visit) || 0;
+        animateCount(n);
+      })
+      .catch(() => {
+        const k = 'fc_views';
+        let v = parseInt(localStorage.getItem(k) || '0', 10) + 1;
+        localStorage.setItem(k, v);
+        animateCount(v);
+      });
   </script>
 </body>
 </html>
